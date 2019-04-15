@@ -57,9 +57,10 @@
 (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)  ; full screen
 
 
+(global-set-key (kbd "M-m") nil)
 
 (general-define-key
- :prefix "C-c"
+ :prefix "M-m"
  "g"  'magit-status
  
  "b"  'ivy-switch-buffer  ; change buffer, chose using ivy
