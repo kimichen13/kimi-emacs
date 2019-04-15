@@ -1,0 +1,17 @@
+
+;; ----- smex-history -----
+(
+ comment-region
+ comment-line
+ cd
+ 5x5
+ arp
+ dbx
+ dig
+)
+
+;; ----- smex-data -----
+(
+ (comment-line . 1)
+ (comment-region . 1)
+)

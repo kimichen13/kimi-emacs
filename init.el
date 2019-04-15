@@ -37,7 +37,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (magit avy general use-package))))
+ '(package-selected-packages (quote (smex auto-complete magit avy general use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -55,6 +55,46 @@
 ;;;; theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-theme 'dracula t)
+
+;;;; dashboard
+(use-package dashboard :ensure t
+  :config (dashboard-setup-startup-hook))
+
+;; Set the title
+(setq dashboard-banner-logo-title "Welcome to Emacs Dashboard, Kimi!")
+;; Set the banner
+(setq dashboard-startup-banner "~/.emacs.d/dashboard.jpeg")
+;; Value can be
+;; 'official which displays the official emacs logo
+;; 'logo which displays an alternative emacs logo
+;; 1, 2 or 3 which displays one of the text banners
+;; "path/to/your/image.png" which displays whatever image you would prefer
+
+;; Content is not centered by default. To center, set
+(setq dashboard-center-content t)
+
+;; To disable shortcut "jump" indicators for each section, set
+;; (setq dashboard-show-shortcuts nil)
+
+;; (setq dashboard-items '((recents  . 5)
+;;                         (bookmarks . 5)
+;;                         (projects . 5)
+;;                         (agenda . 5)
+;;                         (registers . 5)))
+
+;;;; AutoComplete
+(use-package auto-complete :ensure t)
+(ac-config-default) ;;; basic configuration
+
+;;;; Company
+					; (add-hook 'after-init-hook 'global-company-mode)
+
+;;;; smex
+(use-package smex :ensure t)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;;;; Magit
 (use-package magit :ensure t)
