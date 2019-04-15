@@ -52,12 +52,16 @@
 (use-package counsel :ensure t)
 (use-package swiper :ensure t)
 
+;;;; theme
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(load-theme 'dracula t)
+
 ;;;; Magit
 (use-package magit :ensure t)
 (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)  ; full screen
 
 
-(global-set-key (kbd "M-m") nil)
+(global-set-key (kbd "M-m") nil)  ; Unbind `M-m` to use it as prefix
 
 (general-define-key
  :prefix "M-m"
