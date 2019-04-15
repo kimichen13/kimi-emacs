@@ -1,17 +1,21 @@
 
 ;; ----- smex-history -----
 (
+ linum-mode
+ package-install
+ package-refresh-contents
  comment-region
  comment-line
  cd
  5x5
- arp
- dbx
- dig
 )
 
 ;; ----- smex-data -----
 (
  (comment-line . 1)
  (comment-region . 1)
+ (package-refresh-contents . 1)
+ (package-install . 1)
+ (linum-relative-mode . 1)
+ (linum-mode . 2)
 )

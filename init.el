@@ -1,4 +1,4 @@
-;;; Kimi Chen's .emacs file
+;;; kimi chen's .emacs file
 ;; Created on 14 April 2019 in Miami.
 
 (setq delete-old-versions -1 )		; delete excess backup versions silently
@@ -37,7 +37,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (smex auto-complete magit avy general use-package))))
+ '(package-selected-packages
+   (quote
+    (dashboard linum-relative powerline smex auto-complete magit avy general use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -45,8 +47,11 @@
  ;; If there is more than one, they won't work right.
  )
 
-(use-package general :ensure t)
 (use-package which-key :ensure t)
+(which-key-mode)
+
+
+(use-package general :ensure t)
 
 (use-package avy :ensure t)
 (use-package counsel :ensure t)
@@ -55,6 +60,16 @@
 ;;;; theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (load-theme 'dracula t)
+
+;;;; powerline
+(use-package powerline :ensure t)
+(powerline-default-theme)
+
+;;;; linum-relative
+(use-package linum-relative :ensure t)
+(setq linum-relative-backend 'display-line-numbers-mode)
+;(global-linum-mode nil)
+;(linum-relative-toggle)
 
 ;;;; dashboard
 (use-package dashboard :ensure t
@@ -65,7 +80,7 @@
 ;; Set the banner
 (setq dashboard-startup-banner "~/.emacs.d/dashboard.jpeg")
 ;; Value can be
-;; 'official which displays the official emacs logo
+;; 'official which DISPLAYS the official emacs logo
 ;; 'logo which displays an alternative emacs logo
 ;; 1, 2 or 3 which displays one of the text banners
 ;; "path/to/your/image.png" which displays whatever image you would prefer
@@ -100,12 +115,16 @@
 (use-package magit :ensure t)
 (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)  ; full screen
 
-
+;;;; Bind keys
 (global-set-key (kbd "M-m") nil)  ; Unbind `M-m` to use it as prefix
 
 (general-define-key
  :prefix "M-m"
  "g"  'magit-status
+
+ "l"  '(:ignore t :which-key "linum")
+ "lt" 'linum-relative-toggle
+
  
  "b"  'ivy-switch-buffer  ; change buffer, chose using ivy
  "/"  'counsel-git-grep   ; find string in git project

@@ -49,3 +49,5 @@ flycheck_*.el
 
 /recentf
 transient/
+ac-comphist.dat
+smex-items
