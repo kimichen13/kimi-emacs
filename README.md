@@ -12,7 +12,7 @@ Just clone to `.emacs.d` and run the emacs.
 
 ## Authors
 
-* **Kimi Chen** - *Initial work* - [PurpleBooth](https://github.com/kimichen13)
+* **Kimi Chen** - *Initial work* - [Kimi Chen](https://github.com/kimichen13)
 
 ## License
 
