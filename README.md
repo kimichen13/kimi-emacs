@@ -1,4 +1,4 @@
-# Kimi Emcas
+# Kimi Emacs
 
 A template to make good README.md.
 
