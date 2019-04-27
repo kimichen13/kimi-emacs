@@ -108,8 +108,12 @@
 			(registers . 5)))
 
 ;;;; AutoComplete
-(use-package auto-complete :ensure t)
-(ac-config-default) ;;; basic configuration
+;; (use-package auto-complete :ensure t)
+;; (ac-config-default) ;;; basic configuration
+
+;;;; company-mode
+(use-package company :ensure t)
+(add-hook 'after-init-hook 'global-company-mode)
 
 
 ;;;; smex
