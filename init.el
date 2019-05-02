@@ -40,7 +40,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
 	 (quote
-		(tide flycheck web-mode dashboard linum-relative powerline smex auto-complete magit avy general use-package))))
+		(yaml-mode tide flycheck web-mode dashboard linum-relative powerline smex auto-complete magit avy general use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -150,6 +150,12 @@
   (global-flycheck-mode t)
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   )
+
+(use-package yaml-mode :ensure t)
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+(add-hook 'yaml-mode-hook
+          (lambda ()
+            (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
 ;; ;;;; tern
 ;; (use-package tern
