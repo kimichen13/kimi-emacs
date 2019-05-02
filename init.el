@@ -1,5 +1,8 @@
+;;; package --- Summary:
 ;;; kimi chen's .emacs file
-;; Created on 14 April 2019 in Miami.
+;;; Created on 14 April 2019 in Miami.
+
+;;; Commentary:
 
 ;;; Code:
 (setq delete-old-versions -1 )		; delete excess backup versions silently
@@ -40,7 +43,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
 	 (quote
-		(yaml-mode tide flycheck web-mode dashboard linum-relative powerline smex auto-complete magit avy general use-package))))
+		(golden-ratio yaml-mode tide flycheck web-mode dashboard linum-relative powerline smex auto-complete magit avy general use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -51,8 +54,13 @@
 (use-package which-key :ensure t)
 (which-key-mode)
 
-
 (use-package general :ensure t)
+
+(use-package helm :ensure t)
+(global-set-key (kbd "M-x") #'helm-M-x)
+(global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+(global-set-key (kbd "C-x C-f") #'helm-find-files)
+(helm-mode 1)
 
 (use-package avy :ensure t)
 (use-package counsel :ensure t)
@@ -72,14 +80,21 @@
 (load-theme 'dracula t)
 
 ;;;; powerline
-(use-package powerline :ensure t)
-(powerline-default-theme)
+(use-package powerline :ensure t
+	:config
+;	(setq powerline-image-apple-rgb t)
+;	(setq powerline-default-separator 'nil)
+	(powerline-default-theme)
+	(display-time-mode t))
 
 ;;;; linum-relative
 (use-package linum-relative :ensure t)
 (setq linum-relative-backend 'display-line-numbers-mode)
 ;(global-linum-mode nil)
-;(linum-relative-toggle)
+																				;(linum-relative-toggle)
+
+(use-package golden-ratio :ensure)
+(golden-ratio-mode 1)
 
 ;;;; dashboard
 (use-package dashboard :ensure t
@@ -117,11 +132,11 @@
 
 
 ;;;; smex
-(use-package smex :ensure t)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; (use-package smex :ensure t)
+;; (global-set-key (kbd "M-x") 'smex)
+;; (global-set-key (kbd "M-X") 'smex-major-mode-commands)
 ;; This is old M-x.
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+;; (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;;;; Magit
 (use-package magit :ensure t)
@@ -156,6 +171,8 @@
 (add-hook 'yaml-mode-hook
           (lambda ()
             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+
+(setq ido-separator "\n")
 
 ;; ;;;; tern
 ;; (use-package tern
