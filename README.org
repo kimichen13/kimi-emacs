@@ -8,11 +8,11 @@ Just clone to `.emacs.d` and run the emacs.
 
 ** Idea
 
-[BuildMyOwnSpacemacsLikeEmacs](https://gist.github.com/8498ea78c10e6cb8d2cfed1805c6fd5e.git)
+[[https://gist.github.com/8498ea78c10e6cb8d2cfed1805c6fd5e.git][BuildMyOwnSpacemacsLikeEmacs]]
 
 **  Authors
 
-**Kimi Chen** - *Initial work* - [Kimi Chen](https://github.com/kimichen13)
+*Kimi Chen* - /Initial work/ - [[https://github.com/kimichen13][Kimi Chen]]
 
 ** License
 
