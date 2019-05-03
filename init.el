@@ -43,7 +43,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
 	 (quote
-		(golden-ratio yaml-mode tide flycheck web-mode dashboard linum-relative powerline smex auto-complete magit avy general use-package))))
+		(company golden-ratio yaml-mode tide flycheck web-mode dashboard linum-relative powerline smex auto-complete magit avy general use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -60,6 +60,7 @@
 (global-set-key (kbd "M-x") #'helm-M-x)
 (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
 (global-set-key (kbd "C-x C-f") #'helm-find-files)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (helm-mode 1)
 
 (use-package avy :ensure t)
@@ -88,10 +89,12 @@
 	(display-time-mode t))
 
 ;;;; linum-relative
-(use-package linum-relative :ensure t)
-(setq linum-relative-backend 'display-line-numbers-mode)
-;(global-linum-mode nil)
-																				;(linum-relative-toggle)
+(use-package linum-relative :ensure t
+	:config
+	(setq linum-relative-backend 'display-line-numbers-mode)
+	;;	(helm-linum-relative-mode 1)
+	)
+
 
 (use-package golden-ratio :ensure)
 (golden-ratio-mode 1)
@@ -130,13 +133,6 @@
 (use-package company :ensure t)
 (add-hook 'after-init-hook 'global-company-mode)
 
-
-;;;; smex
-;; (use-package smex :ensure t)
-;; (global-set-key (kbd "M-x") 'smex)
-;; (global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;; This is old M-x.
-;; (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;;;; Magit
 (use-package magit :ensure t)
@@ -264,3 +260,7 @@
  "fr" 'counsel-recentf
 
  )
+
+(add-to-list 'load-path (expand-file-name "~/Google Drive/MBP/Emacs/Configuration"))
+(require 'org-mode-kimi)
+;;; init.el ends here
