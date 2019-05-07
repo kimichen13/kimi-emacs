@@ -4,7 +4,7 @@ Build my own Spacemacs-like Emacs.
 
 ** Getting Started
 
-Just clone to `.emacs.d` and run the emacs.
+Just clone to ~.emacs.d~ and run the emacs.
 
 ** Idea
 
