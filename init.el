@@ -43,7 +43,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
 	 (quote
-		(company golden-ratio yaml-mode tide flycheck web-mode dashboard linum-relative powerline smex auto-complete magit avy general use-package))))
+		(htmlize company golden-ratio yaml-mode tide flycheck web-mode dashboard linum-relative powerline smex auto-complete magit avy general use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -96,8 +96,12 @@
 	)
 
 
-(use-package golden-ratio :ensure)
-(golden-ratio-mode 1)
+(use-package golden-ratio :ensure t
+	:config
+	(golden-ratio-mode 1))
+
+
+(use-package htmlize :ensure t)
 
 ;;;; dashboard
 (use-package dashboard :ensure t
@@ -260,6 +264,16 @@
  "fr" 'counsel-recentf
 
  )
+
+;; (defun my/org-inline-css-hook (exporter)
+;;   "Insert custom inline css to automatically set the background of code to whatever theme I'm using's background"
+;;   (when (eq exporter 'html)
+;;     (let* ((my-pre-bg (face-background 'default))
+;;            (my-pre-fg (face-foreground 'default)))
+;;       (setq org-export-html-style-extra (format "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s;}</style>\n"
+;;                 my-pre-bg my-pre-fg)))))
+
+;; (add-hook 'org-export-before-processing-hook 'my/org-inline-css-hook)
 
 (add-to-list 'load-path (expand-file-name "~/Google Drive/MBP/Emacs/Configuration"))
 (require 'org-mode-kimi)
