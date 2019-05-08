@@ -5,6 +5,8 @@
 ;;; Commentary:
 
 ;;; Code:
+;(set gc-cons-threshold 100000000)
+
 (setq delete-old-versions -1 )		; delete excess backup versions silently
 (setq version-control t )		; use version control
 (setq vc-make-backup-files t )		; make backups file even when in version controlled dir
@@ -49,30 +51,61 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(org-block ((t (:background "#969696"))))
+ '(org-block-begin-line ((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
+ '(org-block-end-line ((t (:overline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF")))))
 
 (use-package which-key :ensure t)
 (which-key-mode)
 
 (use-package general :ensure t)
 
-(use-package helm :ensure t)
-(global-set-key (kbd "M-x") #'helm-M-x)
-(global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-(global-set-key (kbd "C-x C-f") #'helm-find-files)
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
-(helm-mode 1)
+;; (use-package helm :ensure t)
+;; (global-set-key (kbd "M-x") #'helm-M-x)
+;; (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
+;; (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+;; (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
+;; (helm-mode 1)
+;; (setq projectile-completion-system 'helm)
+;; (helm-projectile-on)
+
+;; (use-package helm-projectile :ensure t)
 
 (use-package avy :ensure t)
-(use-package counsel :ensure t)
-(use-package swiper :ensure t)
+(use-package counsel :ensure t
+	:config
+	(global-set-key (kbd "M-y") 'counsel-yank-pop))
+(use-package swiper :ensure t
+	:config
+	(global-set-key "\C-s" 'swiper))
+
+(use-package ivy :ensure t
+  :diminish (ivy-mode . "")
+  :bind
+  :config
+  (ivy-mode 1)
+  ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
+  (setq ivy-use-virtual-buffers t)
+	(setq enable-recursive-minibuffers t)
+  ;; number of result lines to display
+  (setq ivy-height 10)
+  ;; does not count candidates
+  (setq ivy-count-format "")
+  ;; no regexp by default
+  (setq ivy-initial-inputs-alist nil)
+  ;; configure regexp engine.
+  (setq ivy-re-builders-alist
+	  ;; allow input not in order
+        '((t   . ivy--regex-ignore-order))))
 
 (use-package projectile
   :ensure t
-  :config
+	:config
 	(define-key projectile-mode-map (kbd "M-m p") 'projectile-command-map)
 	(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (projectile-mode +1))
+	(projectile-mode +1)
+	)
 (setq projectile-project-search-path '("~/Documents/Program/"))
 
 
@@ -105,6 +138,19 @@
 
 ;;;; dashboard
 (use-package dashboard :ensure t
+	:if (< (length command-line-args) 2)
+  :preface
+  (defun my/dashboard-banner ()
+    "Sets a dashboard banner including information on package initialization
+     time and garbage collections."
+    (setq dashboard-banner-logo-title
+          (format "Emacs ready in %.2f seconds with %d garbage collections."
+                  (float-time
+                   (time-subtract after-init-time before-init-time)) gcs-done)))
+  :init
+  (add-hook 'after-init-hook 'dashboard-refresh-buffer)
+  (add-hook 'dashboard-mode-hook 'my/dashboard-banner)
+  :custom (dashboard-startup-banner 'logo)
   :config (dashboard-setup-startup-hook))
 
 ;; Set the title
@@ -172,8 +218,6 @@
 (add-hook 'yaml-mode-hook
           (lambda ()
             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
-
-(setq ido-separator "\n")
 
 ;; ;;;; tern
 ;; (use-package tern
@@ -253,11 +297,7 @@
  "l"  '(:ignore t :which-key "linum")
  "lt" 'linum-relative-toggle
 
-;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-
- 
- "b"  'ivy-switch-buffer  ; change buffer, chose using ivy
+ "b"  'helm-buffer-list
  "/"  'counsel-git-grep   ; find string in git project
  ;; bind to double key press
  "f"  '(:ignore t :which-key "files")
