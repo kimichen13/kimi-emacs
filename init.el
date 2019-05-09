@@ -5,12 +5,41 @@
 ;;; Commentary:
 
 ;;; Code:
-;(set gc-cons-threshold 100000000)
+(defconst kimi/emacs-directory (concat (getenv "HOME") "/.emacs.d/"))
+(defun kimi/emacs-subdirectory (d) (expand-file-name d kimi/emacs-directory))
+
+(let* ((subdirs '("elisp" "backups"))
+       (fulldirs (mapcar (lambda (d) (kimi/emacs-subdirectory d)) subdirs)))
+  (dolist (dir fulldirs)
+    (when (not (file-exists-p dir))
+      (message "Make directory: %s" dir)
+      (make-directory dir))))
+
+(setq custom-file (expand-file-name "custom.el" kimi/emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
+
+(add-to-list 'load-path (kimi/emacs-subdirectory "elisp"))
+
+(setq gc-cons-threshold 50000000)
+(setq gnutls-min-prime-bits 4096)
+
+;; Backup settings
+(setq backup-directory-alist
+      `(("." . ,(expand-file-name
+                 (kimi/emacs-subdirectory "backups"))))); which directory to put backups file
+(setq vc-make-backup-files t )		; make backups file even when in version controlled dir
+(defun save-all ()
+  "Save all dirty buffers without asking for confirmation."
+  (interactive)
+  (save-some-buffers t))
+(add-hook 'focus-out-hook 'save-all)
+
+
 
 (setq delete-old-versions -1 )		; delete excess backup versions silently
 (setq version-control t )		; use version control
-(setq vc-make-backup-files t )		; make backups file even when in version controlled dir
-(setq backup-directory-alist `(("." . "~/.emacs.d/backups")) ) ; which directory to put backups file
+
 (setq vc-follow-symlinks t )				       ; don't ask for confirmation when opening symlinked file
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)) ) ;transform backups file name
 (setq inhibit-startup-screen t )	; inhibit useless and old-school startup screen
@@ -22,7 +51,6 @@
 (setq initial-scratch-message "Welcome Kimi!") ; print a default message in the empty scratch buffer opened at startup
 
 (require 'package)
-
 (setq package-enable-at-startup nil) ; tells emacs not to load any packages before starting up
 ;; the following lines tell emacs where on the internet to look up
 ;; for new packages.
@@ -31,6 +59,7 @@
                          ("melpa"     . "https://melpa.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")))
 (package-initialize)
+;; (package-refresh-contents)
 
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package) ; unless it is already installed
@@ -44,8 +73,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-	 (quote
-		(htmlize company golden-ratio yaml-mode tide flycheck web-mode dashboard linum-relative powerline smex auto-complete magit avy general use-package))))
+   (quote
+    (htmlize company golden-ratio yaml-mode tide flycheck web-mode dashboard linum-relative powerline smex auto-complete magit avy general use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -55,22 +84,17 @@
  '(org-block-begin-line ((t (:underline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF"))))
  '(org-block-end-line ((t (:overline "#A7A6AA" :foreground "#008ED1" :background "#EAEAFF")))))
 
+(use-package yasnippet
+  :ensure t
+  :init
+  (yas-global-mode 1)
+  :config
+  (add-to-list 'yas-snippet-dirs (kimi/emacs-subdirectory "snippets")))
+
 (use-package which-key :ensure t)
 (which-key-mode)
 
 (use-package general :ensure t)
-
-;; (use-package helm :ensure t)
-;; (global-set-key (kbd "M-x") #'helm-M-x)
-;; (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
-;; (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-;; (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
-;; (helm-mode 1)
-;; (setq projectile-completion-system 'helm)
-;; (helm-projectile-on)
-
-;; (use-package helm-projectile :ensure t)
 
 (use-package avy :ensure t)
 (use-package counsel :ensure t
@@ -79,6 +103,9 @@
 (use-package swiper :ensure t
 	:config
 	(global-set-key "\C-s" 'swiper))
+
+(use-package smart-comment :ensure t
+  :bind ("M-;" . smart-comment))
 
 (use-package ivy :ensure t
   :diminish (ivy-mode . "")
@@ -108,6 +135,15 @@
 	)
 (setq projectile-project-search-path '("~/Documents/Program/"))
 
+(use-package undo-tree
+  :ensure t
+  :diminish undo-tree-mode
+  :init
+  (global-undo-tree-mode 1)
+  :config
+  (defalias 'redo 'undo-tree-redo)
+  :bind (("C-z" . undo)     ; Zap to character isn't helpful
+         ("C-S-z" . redo)))
 
 ;;;; theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
@@ -122,11 +158,17 @@
 	(display-time-mode t))
 
 ;;;; linum-relative
-(use-package linum-relative :ensure t
-	:config
-	(setq linum-relative-backend 'display-line-numbers-mode)
-	;;	(helm-linum-relative-mode 1)
-	)
+(use-package linum-relative
+  :ensure t
+  :config
+  (defun linum-new-mode ()
+    "If line numbers aren't displayed, then display them.
+     Otherwise, toggle between absolute and relative numbers."
+    (interactive)
+    (if linum-mode
+        (linum-relative-toggle)
+      (linum-mode 1)))
+)
 
 
 (use-package golden-ratio :ensure t
@@ -186,8 +228,25 @@
 
 
 ;;;; Magit
-(use-package magit :ensure t)
-(setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)  ; full screen
+(use-package magit
+  :ensure t
+  :commands magit-status magit-blame
+  :init
+  (defadvice magit-status (around magit-fullscreen activate)
+    (window-configuration-to-register :magit-fullscreen)
+    ad-do-it
+    (delete-other-windows))
+  :config
+  (setq magit-branch-arguments nil
+        ;; use ido to look for branches
+        magit-completing-read-function 'magit-ido-completing-read
+        ;; don't put "origin-" in front of new branch names by default
+        magit-default-tracking-name-function 'magit-default-tracking-name-branch-only
+        magit-push-always-verify nil
+        ;; Get rid of the previous advice to go into fullscreen
+        magit-restore-window-configuration t)
+  :bind ("C-x g" . magit-status))
+
 
 ;;;; web-mode
 (use-package web-mode
@@ -284,20 +343,16 @@
                       company-files
                       company-yasnippet))))
 
-
 ;;;; Bind keys
-(setq-default tab-width 2)
+(setq-default indent-tabs-mode nil)
+(setq tab-width 2)
 
 (global-set-key (kbd "M-m") nil)  ; Unbind `M-m` to use it as prefix
 
 (general-define-key
  :prefix "M-m"
  "g"  'magit-status
-
- "l"  '(:ignore t :which-key "linum")
- "lt" 'linum-relative-toggle
-
- "b"  'helm-buffer-list
+ "l" 'linum-new-mode
  "/"  'counsel-git-grep   ; find string in git project
  ;; bind to double key press
  "f"  '(:ignore t :which-key "files")
