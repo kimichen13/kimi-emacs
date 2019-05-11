@@ -20,6 +20,7 @@
   (load custom-file))
 
 (add-to-list 'load-path (kimi/emacs-subdirectory "elisp"))
+(add-to-list 'load-path (expand-file-name "~/Google Drive/MBP/Emacs/Configuration"))
 
 (setq gc-cons-threshold 50000000)
 (setq gnutls-min-prime-bits 4096)
@@ -361,16 +362,7 @@
 
  )
 
-;; (defun my/org-inline-css-hook (exporter)
-;;   "Insert custom inline css to automatically set the background of code to whatever theme I'm using's background"
-;;   (when (eq exporter 'html)
-;;     (let* ((my-pre-bg (face-background 'default))
-;;            (my-pre-fg (face-foreground 'default)))
-;;       (setq org-export-html-style-extra (format "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s;}</style>\n"
-;;                 my-pre-bg my-pre-fg)))))
-
-;; (add-hook 'org-export-before-processing-hook 'my/org-inline-css-hook)
-
-(add-to-list 'load-path (expand-file-name "~/Google Drive/MBP/Emacs/Configuration"))
 (require 'org-mode-kimi)
+
+;; (require 'init-eshell)
 ;;; init.el ends here

@@ -58,8 +58,7 @@ matches. This seems to be more helpful to me."
        (t "")))))
 
 (defun eshell/ef (filename &optional dir)
-  "Searches for the first matching filename and loads it into a
-file to edit."
+  "Searches for the first matching filename and loads it into a file to edit."
   (let* ((files (eshell/f filename dir))
          (file (car (s-split "\n" files))))
     (find-file file)))
@@ -70,4 +69,5 @@ file to edit."
     (erase-buffer)
     (eshell-send-input)))
 
+(provide 'init-eshell)
 ;;; emacs-eshell.el ends here
