@@ -216,7 +216,7 @@
                         (bookmarks . 5)
                         (projects . 5)
                         (agenda . 5)
-												(registers . 5)))
+                        (registers . 5)))
 (setq bookmark-save-flag 1)
 
 ;;;; AutoComplete
@@ -248,6 +248,9 @@
         magit-restore-window-configuration t)
   :bind ("C-x g" . magit-status))
 
+(use-package magit-gitflow
+  :ensure t
+  :config (add-hook 'magit-mode-hook 'turn-on-magit-gitflow))
 
 ;;;; web-mode
 (use-package web-mode
