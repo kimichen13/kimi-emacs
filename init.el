@@ -227,6 +227,7 @@
 (use-package company :ensure t)
 (add-hook 'after-init-hook 'global-company-mode)
 
+;;; SQL
 
 ;;;; Magit
 (use-package magit
@@ -245,8 +246,13 @@
         magit-default-tracking-name-function 'magit-default-tracking-name-branch-only
         magit-push-always-verify nil
         ;; Get rid of the previous advice to go into fullscreen
-        magit-restore-window-configuration t)
+        magit-restore-window-configuration t
+        )
+  (setf (alist-get 'unpushed magit-section-initial-visibility-alist) 'show)
+  (setf (alist-get 'stashes magit-section-initial-visibility-alist) 'show)
   :bind ("C-x g" . magit-status))
+
+(use-package ido-completing-read+ :ensure t)
 
 (use-package magit-gitflow
   :ensure t
@@ -267,6 +273,14 @@
         '(("jsx" . ".*\\.js\\'"))
         )
   )
+
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
 
 ;;;; flycheck
 (use-package flycheck
