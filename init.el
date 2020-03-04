@@ -49,7 +49,7 @@
 (setq coding-system-for-write 'utf-8 )
 (setq sentence-end-double-space nil)	; sentence SHOULD end with only a point.
 (setq default-fill-column 80)		; toggle wrapping text at the 80th character
-(setq initial-scratch-message "Welcome Kimi!") ; print a default message in the empty scratch buffer opened at startup
+(setq initial-scratch-message "Welcome Kimi!\n") ; print a default message in the empty scratch buffer opened at startup
 
 (require 'package)
 (setq package-enable-at-startup nil) ; tells emacs not to load any packages before starting up
@@ -101,6 +101,10 @@
 (use-package counsel :ensure t
 	:config
 	(global-set-key (kbd "M-y") 'counsel-yank-pop))
+(use-package counsel-projectile :ensure t
+  :config
+  (counsel-projectile-mode 1))
+
 (use-package swiper :ensure t
 	:config
 	(global-set-key "\C-s" 'swiper))
@@ -129,10 +133,8 @@
 
 (use-package projectile
   :ensure t
-	:config
-	(define-key projectile-mode-map (kbd "M-m p") 'projectile-command-map)
+  :config
 	(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-	(projectile-mode +1)
 	)
 (setq projectile-project-search-path '("~/Documents/Program/"))
 
@@ -311,6 +313,18 @@
 ;;   (add-to-list 'company-backends 'company-tern)
 ;;   )
 
+;; (defun copy-from-osx ()
+;;     (shell-command-to-string "pbpaste"))
+  
+;;   (defun paste-to-osx (text &optional push)
+;;     (let ((process-connection-type nil))
+;;       (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+;;         (process-send-string proc text)
+;;         (process-send-eof proc))))
+  
+;;   (setq interprogram-cut-function 'paste-to-osx)
+;;   (setq interprogram-paste-function 'copy-from-osx))
+
 ;;;; tide
 (defun setup-tide-mode ()
   (interactive)
@@ -369,14 +383,16 @@
 
 (general-define-key
  :prefix "M-m"
+ "b"  'counsel-bookmark
+ "d"  'counsel-dired
  "g"  'magit-status
- "l" 'linum-new-mode
+ "l"  'linum-new-mode
  "/"  'counsel-git-grep   ; find string in git project
  ;; bind to double key press
  "f"  '(:ignore t :which-key "files")
  "ff" 'counsel-find-file
  "fr" 'counsel-recentf
-
+ "p"  'projectile-command-map
  )
 
 (require 'org-mode-kimi)
