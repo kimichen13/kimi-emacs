@@ -235,7 +235,11 @@
   :config
   (auto-sudoedit-mode 1))
 
-;;; SQL
+;;; Docker
+(use-package dockerfile-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
 ;;;; Magit
 (use-package magit
