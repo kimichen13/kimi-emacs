@@ -229,6 +229,12 @@
 (use-package company :ensure t)
 (add-hook 'after-init-hook 'global-company-mode)
 
+;;;; auto-sudoedit
+(use-package auto-sudoedit
+  :ensure t
+  :config
+  (auto-sudoedit-mode 1))
+
 ;;; SQL
 
 ;;;; Magit
@@ -383,7 +389,7 @@
 
 (general-define-key
  :prefix "M-m"
- "b"  'counsel-bookmark
+ "b" 'counsel-bookmark
  "d"  'counsel-dired
  "g"  'magit-status
  "l"  'linum-new-mode
@@ -393,6 +399,8 @@
  "ff" 'counsel-find-file
  "fr" 'counsel-recentf
  "p"  'projectile-command-map
+ "c"  '(:ignore t :whick-key "commons")
+ "cp" 'org-publish-all
  )
 
 (require 'org-mode-kimi)
