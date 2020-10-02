@@ -241,6 +241,9 @@
   :config
   (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
+;;; json
+(use-package json-mode :ensure t)
+
 ;;;; Magit
 (use-package magit
   :ensure t
