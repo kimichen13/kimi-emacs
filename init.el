@@ -227,6 +227,7 @@
 
 ;;;; company-mode
 (use-package company :ensure t)
+(setq company-dabbrev-downcase nil)
 (add-hook 'after-init-hook 'global-company-mode)
 
 ;;;; auto-sudoedit
