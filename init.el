@@ -31,8 +31,22 @@
                       (font-spec :family "STFangsong" :size 18)
                       )))
 
-(custom-set-variables
- '(initial-frame-alist (quote ((fullscreen . maximized)))))
+(if (featurep 'cocoa)
+    (progn
+      (setq ns-use-native-fullscreen nil)
+      (setq ns-use-fullscreen-animation nil)
+
+      (set-frame-parameter (selected-frame) 'fullscreen 'maximized)
+
+      (run-at-time "2sec" nil
+                   (lambda ()
+                     (toggle-frame-fullscreen)
+                     )))
+  (require 'fullscreen)
+  (fullscreen))
+
+;; (custom-set-variables
+;;  '(initial-frame-alist (quote ((fullscreen . maximized)))))
 
 (defconst kimi/emacs-directory (concat (getenv "HOME") "/.emacs.d/"))
 (defun kimi/emacs-subdirectory (d) (expand-file-name d kimi/emacs-directory))
@@ -432,7 +446,9 @@
 
 (general-define-key
  :prefix "M-m"
- "b" 'counsel-bookmark
+ "b" '(:ignore t :which-key "bookmarks")
+ "bl" 'counsel-bookmark
+ "bd" 'bookmark-delete
  "d"  'counsel-dired
  "g"  'magit-status
  "l"  'linum-new-mode
