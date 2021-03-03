@@ -65,6 +65,8 @@
 (add-to-list 'load-path (kimi/emacs-subdirectory "elisp"))
 (add-to-list 'load-path (expand-file-name "~/Google Drive/MBP/Emacs/Configuration"))
 
+(require 'org-mode-kimi)
+
 (setq gc-cons-threshold 50000000)
 (setq gnutls-min-prime-bits 4096)
 
@@ -92,7 +94,7 @@
 (setq coding-system-for-write 'utf-8 )
 (setq sentence-end-double-space nil)	; sentence SHOULD end with only a point.
 (setq default-fill-column 80)		; toggle wrapping text at the 80th character
-(setq initial-scratch-message "Welcome Kimi!\n") ; print a default message in the empty scratch buffer opened at startup
+(setq initial-scratch-message ";;; Welcome Kimi!\n;;; Reload Emacs\n(load-file user-init-file)\n") ; print a default message in the empty scratch buffer opened at startup
 
 (require 'package)
 (setq package-enable-at-startup nil) ; tells emacs not to load any packages before starting up
@@ -103,15 +105,19 @@
                          ("melpa"     . "https://melpa.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")))
 (package-initialize)
-(require 'exec-path-from-shell)
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
+
 ;; (package-refresh-contents)
 
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package) ; unless it is already installed
   (package-refresh-contents) ; updage packages archive
   (package-install 'use-package)) ; and install the most recent version of use-package
+
+(require 'exec-path-from-shell)
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+(when (daemonp)
+  (exec-path-from-shell-initialize))
 
 (require 'use-package)
 (custom-set-variables
@@ -145,6 +151,9 @@
 
 (use-package restclient :ensure t)
 (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
+
+(use-package es-mode :ensure t)
+(add-to-list 'auto-mode-alist '("\\.es$" . es-mode))
 
 (use-package avy :ensure t)
 (use-package counsel :ensure t
@@ -263,11 +272,11 @@
 ;; To disable shortcut "jump" indicators for each section, set
 ;; (setq dashboard-show-shortcuts nil)
 
-(setq dashboard-items '((recents  . 10)
+(setq dashboard-items '((agenda . 8)
+                        (recents  . 8)
                         (bookmarks . 5)
-                        (projects . 5)
-                        (agenda . 5)
-                        (registers . 5)))
+                        (projects . 5)))
+
 (setq bookmark-save-flag 1)
 
 ;;;; AutoComplete
@@ -316,6 +325,8 @@
   (setf (alist-get 'unpushed magit-section-initial-visibility-alist) 'show)
   (setf (alist-get 'stashes magit-section-initial-visibility-alist) 'show)
   :bind ("C-x g" . magit-status))
+
+(use-package orgit :ensure t)
 
 (use-package ido-completing-read+ :ensure t)
 
@@ -461,8 +472,6 @@
  "c"  '(:ignore t :whick-key "commons")
  "cp" 'org-publish-all
  )
-
-(require 'org-mode-kimi)
 
 ;; (require 'init-eshell)
 ;;; init.el ends here
