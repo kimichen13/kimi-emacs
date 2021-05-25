@@ -364,16 +364,16 @@
 ;;   )
 
 ;; (defun copy-from-osx ()
-;;     (shell-command-to-string "pbpaste"))
+;;   (shell-command-to-string "pbpaste"))
   
-;;   (defun paste-to-osx (text &optional push)
-;;     (let ((process-connection-type nil))
-;;       (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
-;;         (process-send-string proc text)
-;;         (process-send-eof proc))))
+;; (defun paste-to-osx (text &optional push)
+;;   (let ((process-connection-type nil))
+;;     (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+;;       (process-send-string proc text)
+;;       (process-send-eof proc))))
   
-;;   (setq interprogram-cut-function 'paste-to-osx)
-;;   (setq interprogram-paste-function 'copy-from-osx))
+;; (setq interprogram-cut-function 'paste-to-osx)
+;; (setq interprogram-paste-function 'copy-from-osx))
 
 ;;;; tide
 (defun setup-tide-mode ()
@@ -413,6 +413,17 @@
   (flycheck-add-mode 'javascript-eslint 'web-mode)
   (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
   )
+
+(use-package paredit
+  :ensure t
+  :config
+  (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+  (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+  (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+  (add-hook 'scheme-mode-hook           #'enable-paredit-mode))
 
 (add-hook 'web-mode-hook
             (lambda ()
