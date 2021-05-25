@@ -362,6 +362,9 @@
           (lambda ()
             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
+(use-package expand-region
+  :ensure t
+  :bind ("M-C-w" . er/expand-region))
 ;; ;;;; tern
 ;; (use-package tern
 ;;   :ensure t
