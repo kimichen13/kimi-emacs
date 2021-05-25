@@ -179,9 +179,13 @@
   :bind (("C-z" . undo)     ; Zap to character isn't helpful
          ("C-S-z" . redo)))
 
+(use-package monokai-theme :ensure t)
+
 ;;;; theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'dracula t)
+;; (load-theme 'dracula t)
+(load-theme 'monokai t)
+
 
 ;;;; powerline
 (use-package powerline :ensure t
