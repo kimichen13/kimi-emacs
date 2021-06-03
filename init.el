@@ -136,6 +136,14 @@
   :config
   (counsel-projectile-mode 1))
 
+;; Open files in dired mode using 'open'
+(eval-after-load "dired"
+  '(progn
+     (define-key dired-mode-map (kbd "z")
+       (lambda () (interactive)
+         (let ((fn (dired-get-file-for-visit)))
+           (start-process "default-app" nil "open" fn))))))
+
 (use-package swiper :ensure t
 	:config
 	(global-set-key "\C-s" 'swiper))
@@ -367,17 +375,17 @@
 ;;   (add-to-list 'company-backends 'company-tern)
 ;;   )
 
-;; (defun copy-from-osx ()
-;;   (shell-command-to-string "pbpaste"))
-  
-;; (defun paste-to-osx (text &optional push)
-;;   (let ((process-connection-type nil))
-;;     (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
-;;       (process-send-string proc text)
-;;       (process-send-eof proc))))
-  
-;; (setq interprogram-cut-function 'paste-to-osx)
-;; (setq interprogram-paste-function 'copy-from-osx))
+(defun copy-from-osx ()
+  (shell-command-to-string "pbpaste"))
+
+(defun paste-to-osx (text &optional push)
+  (let ((process-connection-type nil))
+    (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+      (process-send-string proc text)
+      (process-send-eof proc))))
+
+(setq interprogram-cut-function 'paste-to-osx)
+(setq interprogram-paste-function 'copy-from-osx)
 
 ;;;; tide
 (defun setup-tide-mode ()
