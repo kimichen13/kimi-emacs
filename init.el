@@ -144,6 +144,8 @@
          (let ((fn (dired-get-file-for-visit)))
            (start-process "default-app" nil "open" fn))))))
 
+(setq auth-sources '("~/.authinfo.gpg"))
+
 (use-package swiper :ensure t
 	:config
 	(global-set-key "\C-s" 'swiper))
@@ -310,6 +312,18 @@
   (setf (alist-get 'unpushed magit-section-initial-visibility-alist) 'show)
   (setf (alist-get 'stashes magit-section-initial-visibility-alist) 'show)
   :bind ("C-x g" . magit-status))
+
+(use-package forge
+      :ensure t
+      :defer t
+      :after magit
+      :config
+      (add-to-list 'forge-alist '("gitlab.cmss.com" "gitlab.cmss.com/api/v4" "gitlab.cmss.com" forge-gitlab-repository))
+      (add-to-list 'ghub-insecure-hosts "gitlab.cmss.com/api/v4")
+      (setq auth-sources '((:source "~/.authinfo.gpg")))
+      (setq gitlab.user "chenmaomao_ext")
+      (setq gitlab.host "gitlab.cmss.com")
+      )
 
 (use-package orgit :ensure t)
 
