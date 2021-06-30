@@ -130,8 +130,18 @@
 
 (use-package avy :ensure t)
 (use-package counsel :ensure t
-	:config
-	(global-set-key (kbd "M-y") 'counsel-yank-pop))
+  :config
+  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  (global-set-key (kbd "<f1> o") 'counsel-describe-symbol)
+  (global-set-key (kbd "<f1> l") 'counsel-find-library)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "M-y") 'counsel-yank-pop)
+  (global-set-key (kbd "C-c k") 'counsel-ag)
+  (global-set-key (kbd "C-x c") 'counsel-org-capture)
+  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+)
+
 (use-package counsel-projectile :ensure t
   :config
   (counsel-projectile-mode 1))
@@ -223,6 +233,8 @@
 	:config
 	(golden-ratio-mode 1))
 
+(use-package format-all :ensure t)
+
 
 (use-package htmlize :ensure t)
 
@@ -311,15 +323,15 @@
         )
   (setf (alist-get 'unpushed magit-section-initial-visibility-alist) 'show)
   (setf (alist-get 'stashes magit-section-initial-visibility-alist) 'show)
-  :bind ("C-x g" . magit-status))
+  )
 
 (use-package forge
       :ensure t
       :defer t
       :after magit
       :config
-      (add-to-list 'forge-alist '("gitlab.cmss.com" "gitlab.cmss.com/api/v4" "gitlab.cmss.com" forge-gitlab-repository))
       (add-to-list 'ghub-insecure-hosts "gitlab.cmss.com/api/v4")
+      (add-to-list 'forge-alist '("gitlab.cmss.com" "gitlab.cmss.com/api/v4" "gitlab.cmss.com" forge-gitlab-repository))
       (setq auth-sources '((:source "~/.authinfo.gpg")))
       (setq gitlab.user "chenmaomao_ext")
       (setq gitlab.host "gitlab.cmss.com")
