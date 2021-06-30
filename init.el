@@ -335,6 +335,7 @@
       (setq auth-sources '((:source "~/.authinfo.gpg")))
       (setq gitlab.user "chenmaomao_ext")
       (setq gitlab.host "gitlab.cmss.com")
+      (setq forge-topic-list-limit '(100 . 10))
       )
 
 (use-package orgit :ensure t)
