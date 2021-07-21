@@ -4,6 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(initial-frame-alist '((fullscreen . maximized)))
+ '(mouse-wheel-progressive-speed nil)
  '(package-selected-packages
    '(format-all forge paredit expand-region markdown-mode magit-gitflow ido-completing-read+ orgit json-mode dockerfile-mode auto-sudoedit htmlize company golden-ratio yaml-mode tide flycheck web-mode dashboard linum-relative powerline smex auto-complete magit avy general use-package)))
 (custom-set-faces

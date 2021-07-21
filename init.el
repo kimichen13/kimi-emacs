@@ -1,3 +1,4 @@
+
 ;;; package --- Summary:
 ;;; Kimi Chen's .emacs file
 ;;; Created on 14 April 2019 in Miami.
@@ -21,7 +22,6 @@
       ;; if the size is not supported very well, the frame will be clipped
       ;; so that the beginning of the buffer may not be visible correctly.
       (set-face-attribute 'default nil :height 145)
-
       ;; use specific font for Korean charset.
       ;; if you want to use different font size for specific charset,
       ;; add :size POINT-SIZE in the font-spec.
@@ -36,7 +36,6 @@
 
 (custom-set-variables
  '(initial-frame-alist (quote ((fullscreen . maximized)))))
-
 
 (defconst kimi/emacs-directory (concat (getenv "HOME") "/.emacs.d/"))
 (defun kimi/emacs-subdirectory (d) (expand-file-name d kimi/emacs-directory))
@@ -189,6 +188,14 @@
 	)
 (setq projectile-project-search-path '("~/Documents/Program/"))
 
+(use-package wakatime-mode
+  :ensure t
+  :config
+  (progn (setq wakatime-cli-path "/usr/local/bin/wakatime")
+                 (setq wakatime-python-bin nil)
+                 (global-wakatime-mode))
+)
+
 (use-package undo-tree
   :ensure t
   :diminish undo-tree-mode
@@ -314,7 +321,7 @@
   :config
   (setq magit-branch-arguments nil
         ;; use ido to look for branches
-        magit-completing-read-function 'magit-ido-completing-read
+        magit-completing-read-function 'ivy-completing-read
         ;; don't put "origin-" in front of new branch names by default
         magit-default-tracking-name-function 'magit-default-tracking-name-branch-only
         magit-push-always-verify nil
@@ -402,17 +409,17 @@
 ;;   (add-to-list 'company-backends 'company-tern)
 ;;   )
 
-(defun copy-from-osx ()
-  (shell-command-to-string "pbpaste"))
+;; (defun copy-from-osx ()
+;;   (shell-command-to-string "pbpaste"))
 
-(defun paste-to-osx (text &optional push)
-  (let ((process-connection-type nil))
-    (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
-      (process-send-string proc text)
-      (process-send-eof proc))))
+;; (defun paste-to-osx (text &optional push)
+;;   (let ((process-connection-type nil))
+;;     (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+;;       (process-send-string proc text)
+;;       (process-send-eof proc))))
 
-(setq interprogram-cut-function 'paste-to-osx)
-(setq interprogram-paste-function 'copy-from-osx)
+;; (setq interprogram-cut-function 'paste-to-osx)
+;; (setq interprogram-paste-function 'copy-from-osx)
 
 ;;;; tide
 (defun setup-tide-mode ()
