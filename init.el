@@ -334,7 +334,6 @@
 
 (use-package forge
       :ensure t
-      :defer t
       :after magit
       :config
       (add-to-list 'ghub-insecure-hosts "gitlab.cmss.com/api/v4")
