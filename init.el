@@ -138,7 +138,7 @@
   :ensure t
   :diminish undo-tree-mode
   :init
-  (global-undo-tree-mode 1)
+  (global-undo-tree-mode)
   :config
   (defalias 'redo 'undo-tree-redo)
   :bind (("C-z" . undo)     ; Zap to character isn't helpful
@@ -239,6 +239,7 @@
  "p"  'projectile-command-map
  "c"  '(:ignore t :whick-key "commons")
  "cp" 'org-publish-all
+ "cg" 'k/hexo-ox-gfm
  "r"  'k/reload
  )
 
