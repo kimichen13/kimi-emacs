@@ -4,6 +4,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+
 (defconst k/emacs-directory (concat (getenv "HOME") "/.emacs.d/"))
 (defun k/emacs-subdirectory (d) "Emacs sub directory as D." (expand-file-name d k/emacs-directory))
 
@@ -70,6 +72,7 @@
   :hook (after-init . global-emojify-mode))
 ;(add-hook 'after-init-hook #'global-emojify-mode)
 
+(use-package ob-mermaid :ensure t)
 
 (use-package general :ensure t)
 
